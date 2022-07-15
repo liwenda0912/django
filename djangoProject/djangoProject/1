@@ -1,0 +1,189 @@
+shell 创建django文件
+   win+r Django-admin startproject 文件名
+。项目创建时 自动创建 。项目管理文件 。python manage.py 查看相关用法
+d到manage.py 项目路径下 •win+r-/cmd-打开项目路径 - #jpython manage.Ry
+• init.py • python package --init.py 控制包的导入行为 • Settings.py
+。项目配置文件 • Urls. py  diango 项目访问路径
+
+
+ Debug - True (调试）
+ allowed hosts-允许访问端口号
+ installed_apps-注册应用
+ root urlconf - 地址配置
+ template一模板渲染 database 一数据库配置
+ language_code -语言配置 。中文-zh-hans
+创建用户建超级
+python manage.py createsuperuser
+迁移数据库
+python manage.py migrate
+python manage.py migration
+运行
+python manage.py runserver
+
+
+
+
+
+##视图模式
+9.项目跳转
+在setting里app添加新注册应用
+urls.py
+
+应用项目文件介绍：
+testing里的
+models.py是数据库表格的设计
+view.py
+urls.py需要自主添加
+
+10.视图路由视图基本使用
+10.1创建视图函数在views.py里面创建视图函数==>
+                          from django.http import HttpResponse
+                          def index(request):
+                              return HttpResponse('helloworld')
+
+创建一个新的urls，py实现对veiws.py的跳转===>
+                               from django.urls import path
+                               from .views import index
+
+                               # 快捷键 alt+enter
+                               urlpatterns = [
+                                   path('index/', index),
+                               ]
+
+
+在urls.py上配置testing里面的对testing-url的跳转===>
+                                     from django.contrib import admin
+                                     from django.urls import path, include
+
+                                        urlpatterns = [
+                                            path('djangoProject/', include('testing.urls'))
+                                        ]
+10.2访问调试
+http://127.0.0.1:8000/djangoProject/index/
+
+
+11.model模型层简介
+11.1model.py是位于DJANGO视图层和数据库之间的
+   python的对象和数据库之间的一个转换
+    class（pythonl类）--》数据库
+11.2为什么要用模型层
+屏蔽不同数据库之间的差异
+更多的专注业务
+提供了很多便捷工具可供使用
+11.3模型层的相关配置
+sqilt--django自带的
+   python manage.py makemigrations -db文件
+   可视化工具打开
+mysql
+   配置—setting.py里面找
+
+
+12.数据建模
+12.1模型
+    数据库布局额外的元数据
+12.2提取需要创建的字段
+   项目名称
+   项目类型（web，app，其他）
+   项目版本号
+12.3关于django model的创建
+12.3.1创建模型类
+.2定义字符字段
+.3字段属性分析
+    项目名称-字符串
+    项目类型（web，app，其他）-下拉框
+    项目版本号-字符串
+代码===>
+from django.db import models
+TYPE = [(0, 'app'), (1, 'web')]
+# Create your models here.
+
+class project(models.Model):
+    # 项目名称
+    name = models.CharField(max_length=200, blank=False, verbose_name='项目名称')
+    # 项目类型
+    type = models.SmallIntegerField(blank=False, choices=[TYPE], verbose_name='项目类型')
+    # 项目版本号
+    version = models.CharField(max_length=200, blank=False, verbose_name='版本')
+12.4执行数据迁移
+创建项目
+python manage.py makemigrations
+数据库迁移
+python manage.py migrate
+
+
+
+13.初识django admin模块
+13.1如何将应用模块在页面展示
+  需要在对应的应用模块，admin.py里注册
+代码==》from django.contrib import admin
+
+     # Register your models here.
+     from testing.models import project
+
+     admin.site.register(project)
+13.2应用
+可以尝试对页面进行操作
+查看数据库成功
+尝试增加项目
+13.3当前问题
+导航栏展示
+项目title展示
+应用详情展示
+13.4调优
+admin.py
+app.py
+models.py
+
+
+14.django页面展示优化
+# 列表优化
+class ProjectAdmin(admin.ModelAdmin):
+    list_display = ("name", "type", 'version')
+admin.site.register(Project, ProjectAdmin)  # 注册页面格式
+# 全局优化
+admin.site.site_header = '平台管理'
+admin.site.site_title = '后台'
+
+# 导航栏优化
+（在app.py）
+
+django&web
+selenium+pytest
+
+接口（urls。py）
+定义视图函数（view。py）
+配置路由（urls。py）
+访问
+
+class Test(models.Model):
+    test = models.CharField(max_length=200, blank=False, verbose_name='测试名称')
+    ttype = models.SmallIntegerField(blank=False, choices=TYPE, verbose_name="测试类型")
+    subjects = models.CharField(max_length=200, blank=False, verbose_name="测试对象")
+
+dri = webdriver.Chrome(executable_path='chromedriver')  # 打开浏览器
+dri.get("https://www.taobao.com")
+dri.execute_script('window.scrollTo(0,document.body.scrollHeight);')
+time.sleep(5)
+page_html = dri.page_source
+
+t = etree.HTML(page_html)
+# 翻页并模拟点击
+a = dri.find_elements()
+b = t.xpath('//div/div[@class="tb-recommend-content-item"]/a/div[@class="info-wrapper"]/div[@class="title"]/text()')
+c = t.xpath('//div/div[@class="tb-recommend-content-item"]/a/div[@class="img-wrapper"]/img/@src')
+print(c)
+data = b
+conn = sqlite3.connect('db.sqlite3')  # 创建连接到test2.db
+c = conn.cursor()  # 获取游标
+# for i in b:
+# sql = '''
+# insert into testing_name1(test, ttype, subject) values ('1',1,"%s")
+# '''%i
+# content = c.execute(sql)  # 执行sql语句
+
+# 这次因为是查询,所以有返回值,并且不需要com提交
+conn.commit()
+conn.close()
+
+dri.close()  # 关闭浏览器
+dri.quit()  # 退出浏览器
